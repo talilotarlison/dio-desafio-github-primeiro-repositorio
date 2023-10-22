@@ -1,0 +1,4 @@
+- Link para download do Git: https://git-scm.com/downloads
+- O Git Bash é um terminal extendido para otimizar o uso do Git.
+- Repositorio : https://github.com/falvojr/dio-desafio-github-primeiro-repositorio/tree/main
+- Comandos Git: https://gist.github.com/leocomelli/2545add34e4fec21ec16
