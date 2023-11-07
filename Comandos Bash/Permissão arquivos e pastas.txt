@@ -1,0 +1,26 @@
+Permissões:
+
+#PowerShell:
+Get-LocalUser
+Get-LocalGroup
+Get-LocalGroupMember
+Permissões: F(controle Total), M(modificar), RX(ler e executar), R(leitura), W(escrita), OI( na pasta e arquivos do diretório), CI(na pasta e subpastas)
+ICACLS pasta /remove Usuario
+ICACLS pasta /remove Usuario:(w)
+ICACLS pasta /grant Usuario:(OI)(CI)M
+ICACLS pasta /grant Usuario:(r)
+ICACLS pasta /grant Grupo:(w)
+
+#CMD:
+Permissões: R(somente leitura), H(oculto), S(Sistema), A(Arquivo)
+attrib +r file.txt
+attrib -r file.txt
+
+#Linux: https://pt.linuxteaching.com/article/list_users_ubuntu
+sudo chown usuario /home/leonardo/teste
+Permissões: d(pasta), r(leitura)=4, w(escrita/gravação)=2, x(execução)=1, u(usuário), g(grupo), o(outros usuários)
+sudo chmod ugo+rwx file.txt
+sudo chmod ug+rw file.txt
+sudo chmod +rw file.txt
+sudo chmod 421 file.txt
+sudo chmod 775 file.txt
