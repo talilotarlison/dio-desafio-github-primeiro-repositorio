@@ -1,0 +1,21 @@
+CMD                       	LINUX                    	DESCRIÇÃO
+dir                       	ls                       	Lista Conteúdo Da Pasta Atual
+mkdir pasta               	mkdir pasta              	Cria Uma Pasta
+rmdir pasta               	rmdir pasta              	Apaga Uma Pasta
+rd pasta                  	rm -r pasta              	Apaga Uma Pasta
+cd pasta                  	cd pasta                 	Entra Numa Pasta
+cd ..                     	cd ..                    	Sai Da Pasta Atual Para Um Nível Acima
+copy con: 01.txt F6       	touch 01.txt             	Cria Arquivo Em Branco Chamado 01.Txt
+echo '' > 01.txt          	echo '' > 01.txt         	Cria Arquivo Em Branco Chamado 01.Txt
+echo 'Mensagem'           	echo 'Mensagem'          	Escreve Mensagem Na Tela
+del 01.txt                	rm 01.txt                	Apaga Arquivo 01.Txt
+ren 01.txt 02.txt         	mv 01.txt 02.txt         	Renomeia Arquivo 01.Txt Para 02.Txt
+copy 01.txt /destino      	cp 01.txt /destino       	Copia O Arquivo 01.Txt Para Dentro Da Pasta Destino Na Raiz.
+move 01.txt /destino      	mv 01.txt /destino       	Move O Arquivo 01.Txt Para Dentro Da Pasta Destino Na Raiz.
+echo 'Mensagem' >> 01.txt 	echo 'Mensagem' >> 01.txt	Escreve Mensagem Dentro Do Arquivo 01.Txt
+type 01.txt               	cat 01.txt               	Mostrar conteúdo do arquivo 01.txt na tela.
+more 01.txt               	more 01.txt              	Mostrar conteúdo do arquivo 01.txt na tela.
+more 01.txt               	less 01.txt              	Mostrar conteúdo do arquivo 01.txt na tela.
+find Mensagem 01.txt      	grep Mensagem 01.txt     	Procura Mensagem dentro do arquivo 01.txt.
+
+
