@@ -1,0 +1,25 @@
+#7zip
+7z a files.7z file*.txt
+7z e files.7z
+
+#Winrar
+rar a files.rar file*.txt
+unrar e files.rar
+
+#Linux
+tar -cf files.tar file*.txt
+tar -tf files.tar 
+tar -xf files.tar 
+tar -cjf files.tar.bz2 file*.txt
+tar -xf files.tar.bz2 
+tar -czf files.tar.gz file*.txt
+tar -xf files.tar.gz
+tar -czf files.tgz file*.txt
+tar -xf files.tgz
+
+#Powershell
+Compress-Archive -Path ./file1.txt, ./file2.txt, ./file3.txt -DestinationPath ./files.zip
+Expand-Archive -Path ./files.zip -DestinationPath ./
+
+Compress-Archive -Path ./pasta -DestinationPath ./pasta.zip
+Expand-Archive -Path ./pasta.zip -DestinationPath ./
