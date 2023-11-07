@@ -1,0 +1,31 @@
+Usuários e Grupos:
+
+#PowerShell:
+Get-LocalUser
+Get-LocalGroup
+Get-LocalGroupMember
+
+#CMD:
+net user usuario #Senha123 /add
+net user usuario #Senha123 /add /fullname:"Nome Completo" /comment:"Descrição do usuário"
+net user usuario /delete
+net localgroup administradores /add
+net localgroup administradores /add /comment:"Descrição do Grupo"
+net localgroup administradores /delete
+net localgroup administradores usuario /add
+net localgroup administradores usuario /delete
+
+#Linux: https://pt.linuxteaching.com/article/list_users_ubuntu
+Para exibir todos os usuários, execute o seguinte comando: compgen -u.
+Para exibir todos os grupos, execute o seguinte comando: compgen -g.
+sudo useradd -m usuario
+sudo passwd usuario
+sudo chsh -s /bin/bash usuario
+sudo addgroup suporte
+sudo usermod -G suporte usuario
+sudo usermod -aG planilhas,memorandos usuario
+sudo groups usuario
+sudo deluser usuario engenheiros
+sudo gpasswd -d usuario planilhas
+sudop delgroup suporte
+sudo userdel -r usuario
