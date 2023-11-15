@@ -1,0 +1,14 @@
+#Windows:
+##powershell:
+Get-Process -Name firefox
+Get-Process -Name "*fire*"
+Stop-Process -Name firefox
+
+##cmd:
+tasklist
+taskkill /F /PID [PID]
+
+#Linux:
+ps -aux | grep firefox
+pidof firefox
+sudo kill [PID]
