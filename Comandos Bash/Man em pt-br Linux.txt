@@ -1,0 +1,5 @@
+Traduzir man pages para portugês do Brasil:
+	sudo apt install manpages-pt
+	sudo apt install manpages-pt-dev 
+	sudo apt install manpages-pt-br
+	sudo apt install manpages-pt-br-dev
