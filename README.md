@@ -23,6 +23,8 @@ As técnicas e tecnologias utilizadas pra isso são:
 
 - `git`
 - `Github`
+- `Bash`
+- `Power Shell`
 
 
 ## 📚 Mais informações do curso
