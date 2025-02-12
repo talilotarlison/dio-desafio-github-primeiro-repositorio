@@ -121,7 +121,8 @@ Em situações de colaboração em equipe, é essencial manter a integridade do 
 É recomendável evitar a modificação excessiva do histórico de commits, uma vez que isso pode tornar o histórico confuso. O histórico deve ser uma representação precisa do progresso do projeto ao longo do tempo.
 
 
-----------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
+
 fonte : https://blog.somostera.com/desenvolvimento-web/comandos-git
 
 
@@ -270,3 +271,7 @@ Facilidade de usar
 Outro ponto é a facilidade de manipular o sistema, com o auxílio dos comandos git. Trata-se de um sistema de controle de versão que se destaca por ser intuitivo, como demonstramos com os comandos neste artigo. Com alguns comandos simples, você consegue configurar seu repositório, clonar um repositório, deletar arquivos, parar de monitorar arquivos, mudar de branch, etc. 
 
 Guias como este ajudam você a evoluir no domínio do sistema. Assim, as pessoas estudantes podem começar rapidamente e obter bons resultados com as plataformas como o github.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+Para fazer commit de pastas vazias crie um arquivo dentro da pasta com nome `.gitkeep ` assim quando de git status a pasta aparecera para commit
