@@ -1,0 +1,231 @@
+Realizamos a instalação do servidor web, o Nginx, em nosso ambiente. Agora, uma questão que havíamos mencionado era sobre o monitoramento dos recursos e serviços em execução em um sistema.
+
+Monitorando recursos
+Podemos usar em nosso ambiente o comando top para verificar os processos em execução em nosso servidor.
+
+top
+Copiar código
+PID	USER	PR	NI	VIRT	RES	SHR	S	%CPU	%MEM	TIME+	COMMAND
+1	root	20	0	101584	12864	8456	S	0.0	0.3	0:01.29	systemd
+2	root	20	0	0	0	0	S	0.0	0.0	0:00.01	kthreadd
+…	…	…	…	…	…	…	…	…	…	…	…
+Assim, temos uma lista geral. Se observarmos a coluna mais à esquerda, seu nome de identificação é PID. O que isso significa?
+
+O PID é o número do processo. Este dado é bastante útil quando queremos executar uma ação em um determinado processo.
+
+Inclusive, podemos inserir mais informações nessa tabela, que lembra até a saída do gerenciador de recursos do Windows.
+
+Se digitamos, por exemplo, o comando U, filtramos os processos que estão em execução por usuário. Vamos inserir o usuário lucasrm.
+
+PID	USER	PR	NI	VIRT	RES	SHR	S	%CPU	%MEM	TIME+	COMMAND
+2527	lucasrm	20	0	17300	8100	5704	S	0.1	0.2	0:00.07	sshd
+720	lucasrm	20	0	17064	9820	8232	S	0.0	0.2	0:00.04	systemd
+…	…	…	…	…	…	…	…	…	…	…	…
+Estes são os processos vinculados a este usuário nesse servidor. Se pressionarmos Q, saímos do comando.
+
+Se digitarmos um top novamente e digitamos a opção F, o que vai aparecer? Vai aparecer uma série de informações que podem ser listadas na nossa tabela.
+
+PID = Process
+USER = Effectiv
+PR = Priority
+NI - Nive Val
+VIRT = Virtual
+RES = Resident
+SHR = Shared M
+S = Process
+%CPU = CPU Usage
+%MEM = Memory Usage
+TIME + = CPU Time
+COMMAND = Command
+PPID = Parent Process
+…
+Digitamos Q duas vezes seguidas para sair da execução do comando top.
+
+O que gostaríamos de saber é o número de requisições por segundo que estão chegando no servidor Nginx, o número de conexões ativas, ou seja, o número de pessoas usuárias que estão tentando acessar uma página ou um serviço hospedado nesse servidor web que acabamos de instalar.
+
+Na prática, se verificássemos esses parâmetros, descobriríamos que não há nada. Pois, não instalamos nada, nem hospedamos nenhuma página web. Mas podemos verificar o status desse servidor para confirmar se ele está ou não em execução - e até para saber em que momento ocorreu algum tipo de erro.
+
+clear
+Copiar código
+Vamos limpar a tela com o comando acima para explorar que comando e que tipo de ferramenta podemos usar para fazer essa verificação.
+
+Por exemplo, ao executar o comando ps, teremos uma lista breve dos processos gerais que estão em execução em nosso sistema.
+
+ps
+Copiar código
+PID	TTY	TIME	CMD
+2529	pts/0	00:00:00	bash
+2555	pts/0	00:00:00	ps
+…	…	…	…
+Se utilizarmos o comando ps aux, teremos uma lista mais detalhada de processos.
+
+ps aux
+Copiar código
+USER	PID	%CPU	%MEM	VSZ	RSS	TTY	STAT	START	TIME	COMMAND
+root	1	0.0	0.3	101584	12864	?	Ss	08:12	0:01	/sbin/init
+root	2	0.0	0.0	0	0	?	S	08:12	0:00	[kthreadd]
+…	…	…	…	…	…	…	…	…	…	…
+Novamente, temos o PID. Observe que a primeira coluna à esquerda é a USER, onde temos os usuários root e lucasrm.
+
+Temos uma lista geral de processos que estão ocorrendo em nosso sistema, mas e se quiséssemos filtrar algum dado dessa lista?
+
+Por exemplo, gostaríamos de filtrar os processos em execução no Nginx, porque isso vai mostrar que o nosso servidor web está em execução.
+
+Poderíamos usar um comando de redirecionamento. Inclusive, vamos usar um encadeamento de comandos. Como isso vai funcionar?
+
+Vamos digitar um ps aux e, em seguida, vamos usar o que chamamos de pipe, que é a barra vertical.
+
+Basicamente, o pipe nos ajuda a encadear comandos e direcionar a saída de um comando como entrada para o próximo comando.
+
+E qual vai ser o primeiro, o segundo, o terceiro comando nesse encadeamento? Sempre começa da esquerda para a direita.
+
+O primeiro comando a ser executado será o ps aux. Assim, vai listar toda essa tabela. Mas queremos filtrar e exibir em nosso terminal, processos específicos relacionados ao Nginx.
+
+Vamos usar outra ferramenta que se chama grep, que é uma ferramenta de pesquisa. Agora vamos definir o parâmetro de pesquisa a partir dessa entrada, que é essa tabela do ps aux. Qual será? O nginx.
+
+Vamos pressionar "Enter".
+
+ps aux | grep nginx
+Copiar código
+USER	PID	%CPU	%MEM	VSZ	RSS	TTY	STAT	START	TIME	COMMAND
+root	2255	0.0	0.3	55180	12044	?	S	12:27	0:00	nginx: master process/usr/sbin/nginx -g daemon on; master_process on;
+www-data	2258	0.0	0.1	55852	5796	?	S	12:27	0:00	nginx: worker process
+www-data	2259	0.0	0.1	55852	5796	?	S	12:27	0:00	nginx: worker process
+lucasrm		0.0	0.0	4020	2084	pts/0	S+	12:49	0:00	grep --color=auto nginx
+Observe que ele já lista alguns processos que estão relacionados apenas ao Nginx. O último processo listado é a própria busca que estamos realizando.
+
+Se usarmos esse comando para verificar o status do Nginx, vai indicar que o status do Nginx está em execução, mas porque executamos um comando de busca do Nginx. Ele filtrou e achou algo relacionado ao Nginx.
+
+Será que tem como filtrar, retirar essa linha relacionada à própria execução do comando grep?
+
+Podemos usar o seguinte comando, ps aux, o pipe e um grep -v grep.
+
+O que significa isso que estamos escrevendo agora? Basicamente, estamos invertendo o grep. Ou seja, estamos retirando o grep do resultado da pesquisa.
+
+E encaminha essa lista, sem qualquer processo que mencione o grep, para uma nova busca, que é o grep nginx.
+
+Dessa forma, estamos filtrando, retirando todos os processos de execução que são relacionados ao comando grep e enviando isso para uma busca, o grep nginx.
+
+Assim, o que teremos? Teremos apenas os processos que estão relacionados diretamente ao Nginx.
+
+ps aux | grep -v grep | grep nginx
+Copiar código
+USER	PID	%CPU	%MEM	VSZ	RSS	TTY	STAT	START	TIME	COMMAND
+root	2255	0.0	0.3	55180	12044	?	S	12:27	0:00	nginx: master process/usr/sbin/nginx -g daemon on; master_process on;
+www-data	2258	0.0	0.1	55852	5796	?	S	12:27	0:00	nginx: worker process
+www-data	2259	0.0	0.1	55852	5796	?	S	12:27	0:00	nginx: worker process
+Já conseguimos filtrar corretamente e ter um resultado mais relacionado aos processos que, de fato, estão em execução no Nginx.
+
+Podemos usar essa lógica na prática, fazendo esse encadeamento. Mas atualmente já existe um comando, que é o pgrep, que já vai fazer um filtro direto dos processos relacionados a esse nome nginx, que estamos passando para ele como parâmetro.
+
+pgrep nginx
+Copiar código
+2255
+2258
+2259
+Observe, ele vai retornar os ID's desses processos em execução, que estão diretamente relacionados ao Nginx, sem incluir o comando grep, que estamos executando.
+
+Esse comando já executa o encadeamento de uma forma mais simplificada.
+
+Verifique que podemos encaminhar esses resultados, usando o símbolo de maior (>), para um local de descarte.
+
+pgrep nginx > /dev/null
+Copiar código
+Se executarmos isso, o que vai acontecer? Não aparece nada como retorno.
+
+O que acabamos de fazer? Basicamente, rodamos aquele comando, mas direcionamos a saída desse comando para um descarte.
+
+Por exemplo, se digitamos o comando errado, será que vai descartar o erro sem exibir nenhuma mensagem?
+
+pgrip nginx > /dev/null
+Copiar código
+-bash: pgrip: command not found
+
+Agora ele já nos devolveu um erro, ou seja, ele descarta apenas se o resultado for válido.
+
+Mas e se, por exemplo, continuamos a usar o comando errado pgrip, em vez de pgrep, e colocamos um "e" comercial (&) antes do maior?
+
+pgrip nginx &> /dev/null
+Copiar código
+Após pressionar "Enter", nada é retornado. O que aconteceu? Quando colocamos o &, ele redireciona tanto a saída válida quanto o erro. Então, a pessoa usuária não vai ver absolutamente nada na tela.
+
+Por exemplo, podemos usar essa estratégia dentro de um if, mas a saída não serpa exibida para a pessoa usuária. Será encaminhada para o descarte do ambiente Linux - seja um erro ou algum dado.
+
+Status do Nginx
+Com essas ferramentas, vamos implementar um script que verifica o status do Nginx, para saber se ele está, de fato, em execução ou não, e exibir uma mensagem para a pessoa usuária?
+
+Vamos começar com o nano, que é o nosso editor de texto.
+
+nano
+Copiar código
+Primeiro passo é indicar quem vai ser o interpretador, que é o /bin/bash.
+
+Na sequência, o que vamos fazer? Queremos testar se o Nginx está em execução ou não.
+
+Sabemos que, se usamos o pgrep nginx, vamos verificar se tem alguns processos vinculados a esse sistema. Por isso, vamos usar o if e o pgrep nginx.
+
+Só que não queremos que o resultado, ou até mesmo o erro, seja exibido para a pessoa usuária. Então, vamos colocar um &, um sinal de maior e vamos encaminhar essa saída para o descarte do sistema.
+
+Ou seja, só vamos testar a condição para saber se ele está em execução ou não. Se ele estiver, vamos colocar um then echo para exibir para a pessoa usuária que o Nginx está operando.
+
+Inclusive, podemos usar o cifrão ($) para salvar a data, isto é, o momento em que essa verificação foi feita. Isso é bastante útil para debugar os logs de funcionamento do sistema.
+
+Entre parênteses, colocamos date e o símbolo de + para inserir o ano, mês e dia separados por hífen e entre aspas. Ou seja, %Y maiúsculo, %m minúsculo e %d minúsculo, respectivamente.
+
+Agora, vamos inserir hora, minuto e segundo separados por dois-pontos. Ou seja, %H maiúsculo, %M maiúsculo e %S maiúsculo, respectivamente.
+
+Agora, temos o comando que vai exibir para a pessoa usuária um log com a data e hora do sistema, se o Ngix estiver em operação.
+
+Mas, e se ele não estiver. Na linha abaixo, vamos incluir um else echo. Da mesma forma, vamos imprimir a frase Nginx fora de operacao. Em seguida, vamos incluir a data e hora no mesmo formato do echo anterior.
+
+Por fim, devemos fechar o bloco de if com o fi.
+
+#! /bin/bash
+
+if prep nginx &> /dev/null
+then
+    echo "Nginx esta operando $( date +"%Y-%m-%d%H:%M:%S")"
+else
+    echo "Nginx fora de operacao $( date +"%Y-%m-%d%H:%M:%S")"
+fi
+Copiar código
+Agora já temos o script para verificar se o Nginx está funcionando ou não.
+
+Vamos salvar apertando "Y" que significa "Yes". Depois, vamos nomeá-lo como monitoramento.sh. Podemos nos certificar que o script está salvo no nosso diretório com o comando ls.
+
+Vamos dar um chmod +x monitoramento.sh e apertar "Enter".
+
+chmod +x monitoramento.sh
+Copiar código
+Agora vamos executar para conferir se o script está funcionando.
+
+./monitoramento.sh
+Copiar código
+Nginx esta operando 2023-11-2312:58:21
+
+Obtivemos êxito! Confirmamos que Nginx está operando e sabemos também a data e hora da operação. Poderíamos até formatar essa data de outra maneira.
+
+Além disso, vamos forçar a parada do Nginx, usando o seguinte comando:
+
+sudo service nginx stop
+Copiar código
+Ao pressionar "Enter", vai pedir a senha, pois executamos o comando sudo.
+
+Em seguida, vamos executar o script novamente.
+
+./monitoramento.sh
+Copiar código
+Nginx fora de operacao 2023-11-2312:59:37
+
+Agora ele está dizendo que está fora de operação. Para retorná-lo a operação, podemos usar um comando bem parecido, o sudo service nginx, só que agora é o start.
+
+sudo service nginx start
+Copiar código
+Ele não pediu a senha porque já estava em modo privilegiado. Se executar de novo, mostraria que está em operação.
+
+Conclusão
+Agora já temos um script, conseguimos verificar o status de execução do Nginx. Mas se for preciso executar esse script de tempos em tempos, de forma frequente?
+
+Existe uma forma mais automatizada, sem que seja preciso executar manualmente toda vez que quisermos checar o status de funcionamento dele?
+
+Vamos descobrir como fazer isso?
