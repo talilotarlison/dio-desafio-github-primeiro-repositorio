@@ -1,0 +1,71 @@
+Já temos o Nginx instalado em nosso servidor Ubuntu. Criamos um script para verificar o status de execução deste servidor web.
+
+Um dos pontos que comentamos foi realizar essa verificação de forma mais automática e frequente, sem precisar acessar o terminal e executar o script que criamos.
+
+E, claro, também direcionar essa saída do script para um arquivo, para que tenhamos os logs do sistema para verificar em que momento ele ficou inativo e em que momento estava com processos em execução. Mas como fazemos isso em nosso ambiente?
+
+Agendando execução de tarefas
+Primeiro, vamos instalar o crontab. Apesar dele ser um recurso nativo, pode ser que precise ser instalado na versão que estamos utilizando.
+
+Para isso, vamos escrever sudo apt-get update para atualizar os pacotes que temos.
+
+sudo apt-get update
+Copiar código
+Depois um sudo apt-get install, e vamos usar o cron.
+
+sudo apt-get install cron
+Copiar código
+Feito isso, podemos dar o comando crontab seguido do hífen e a letra "E".
+
+crontab -e
+Copiar código
+Com isso, ele abriu o nano com algumas informações de como usar o crontab.
+
+O crontab é uma ferramenta que nos permite agendar a execução de scripts e tarefas em nosso ambiente Linux.
+
+E dentre as explicações apresentadas nesse nano, temos informações sobre como agendar esses processos.
+
+Por exemplo, para definir uma hora, você pode inserir valores concretos para minutos, hora, dia da semana, dia do mês. Ou você pode usar asteriscos nesses campos para qualquer dia do mês, qualquer dia do ano. Assim, é possível executar o script todo dia de 15 em 15 minutos ou de minuto a minuto.
+
+Para começar, o que podemos fazer? Podemos dar um "Ctrl + X" para sair do editor de texto.
+
+E, dentro do diretório home, podemos criar um TXT chamdo saida_nginx.txt.
+
+touch saida_nginx.txt
+Copiar código
+Nesse arquivo, vamos salvar as saídas da execução automática do nosso script. Se damos um ls para listar, vamos verificar que já temos um saida_nginx.txt.
+
+Vamos entrar novamente no crontab, com o mesmo comando:
+
+crontab -e
+Copiar código
+Agora, vamos inserir uma linha nesse crontab.
+
+Na última linha, ele mostra mês (m), hora (h), dia do mês (dom), mês (mon) e dia da semana (dow) e depois o comando (command). Essa é a sintaxe de entrada dessa tabela que o crontab vai ter para executar de forma automática scripts e tarefas.
+
+Para verificar na prática a execução desse script de forma agendada, podemos pedir que ele execute o script de monitoramento do Nginx, minuto a minuto e redirecione a saída da execução desse script para o nosso arquivo que acabamos de criar.
+
+Para isso, vamos inserir cinco asteriscos, correspondendo aos cinco parâmetros. Dessa forma, estamos indicando que queremos executar essa tarefa minuto a minuto.
+
+E agora vamos inserir o comando que será executado que será basicamente o caminho para o script. Sabemos que é o home/lucasrm/monitoramento.sh.
+
+Por fim, para redirecionar essa saída, vamos usar dois sinais de maior (>>). Em seguida, vamos inserir o caminho para o arquivo que vamos usar para registrar essa saída vai estar no home/lucasrm/saida_nginx.txt.
+
+* * * * * home/lucasrm/monitoramento.sh >> home/lucasrm/saida_nginx.txt
+Copiar código
+Inserimos uma linha. Agora, damos um "Ctrl + X" para sair e "Y" para salvar.
+
+Basta aguardar um pouco para abrir o documento de saída e verificar se o status está lá mesmo.
+
+Agora que demos um tempo para o script ser executado, de minuto a minuto, vamos dar um cat nesse arquivo que colocamos como saida_nginx.txt, para verificar o que temos dentro dele.
+
+cat saida_nginx.txt
+Copiar código
+Nginx esta operando 2023-11-2313:28:01
+
+Nginx esta operando 2023-11-2313:29:01
+
+Já temos duas saídas que informando que o Nginx está operando e o timestamp do momento em que essa verificação foi feita.
+
+Agora sabemos como criar scripts, como agendar a execução deles de forma automática em nosso sistema. Agora já conseguimos fazer um monitoramento usando o servidor Ubuntu.
+
